@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.apache.commons.text.StringEscapeUtils;
 
 @RestController
 public class MainController {
@@ -58,8 +57,8 @@ public class MainController {
   public ResponseEntity<String> viewFile(@RequestBody ViewFileRequest request) {
     log.info("Reading file " + request.path);
     try {
-      String result = fileService.readFile(sanitize(request.path));
-      String escapedResult = StringEscapeUtils.escapeHtml4(result);
+      String result = fileService.readFile(escapeHtml4(request.path));
+      String escapedResult = escapeHtml4(result);
       return new ResponseEntity<>(escapedResult, HttpStatus.OK);
     } catch (FileForbiddenFileException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
@@ -67,7 +66,7 @@ public class MainController {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
-  public String sanitize(String path){
+  public String escapeHtml4(String path){
     return Sanitizer.sanitize(path);
   }
 }
