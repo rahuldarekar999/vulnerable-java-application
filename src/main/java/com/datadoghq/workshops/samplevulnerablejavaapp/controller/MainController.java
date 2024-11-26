@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.datadoghq.mycode.commons.StringEscapeUtils;
 
 @RestController
 public class MainController {
@@ -58,7 +59,7 @@ public class MainController {
     log.info("Reading file " + request.path);
     try {
       String result = fileService.readFile(escapeHtml4(request.path));
-      String escapedResult = escapeHtml4(result);
+      String escapedResult = StringEscapeUtils.escapeHtml4(result);
       return new ResponseEntity<>(escapedResult, HttpStatus.OK);
     } catch (FileForbiddenFileException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
