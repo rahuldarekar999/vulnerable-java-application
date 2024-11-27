@@ -59,8 +59,8 @@ public class MainController {
     log.info("Reading file " + request.path);
     try {
       String result = fileService.readFile(request.path);
-     
-      return new ResponseEntity<>(result, HttpStatus.OK);
+      ResponseEntity<String> resp = new ResponseEntity<>(result, HttpStatus.OK);
+      return resp;
     } catch (FileForbiddenFileException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     } catch (FileReadException e) {
