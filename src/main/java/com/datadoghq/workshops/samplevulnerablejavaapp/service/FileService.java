@@ -3,7 +3,7 @@ package com.datadoghq.workshops.samplevulnerablejavaapp.service;
 import com.datadoghq.workshops.samplevulnerablejavaapp.exception.FileForbiddenFileException;
 import com.datadoghq.workshops.samplevulnerablejavaapp.exception.FileReadException;
 import org.springframework.stereotype.Service;
-
+import org.apache.commons.text.StringEscapeUtils;
 import java.io.*;
 
 @Service
@@ -23,7 +23,8 @@ public class FileService {
                 sb.append(System.lineSeparator());
                 line = br.readLine();
             }
-            return sb.toString();
+            String escapedResult = StringEscapeUtils.escapeHtml4(sb.toString());
+            return escapedResult;
         } catch (IOException e) {
             throw new FileReadException(e.getMessage());
         }
