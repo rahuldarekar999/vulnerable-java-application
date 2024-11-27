@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.datadoghq.mycode.commons.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 @RestController
 public class MainController {
@@ -37,7 +37,7 @@ public class MainController {
     log.info("Testing domain " + request.domainName);
     try {
       String result = domainTestService.testDomain(request.domainName);
-      return new ResponseEntity<>(result, HttpStatus.OK);
+      return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     } catch(InvalidDomainException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     } catch (UnableToTestDomainException e) {
@@ -51,7 +51,7 @@ public class MainController {
   public ResponseEntity<String> testWebsite(@RequestBody WebsiteTestRequest request) {
     log.info("Testing website " + request.url);
     String result = websiteTestService.testWebsite(request);
-    return new ResponseEntity<>(result, HttpStatus.OK);
+    return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @RequestMapping(method=RequestMethod.POST, value="/view-file", consumes="application/json")
